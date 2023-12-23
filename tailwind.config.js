@@ -5,21 +5,17 @@ module.exports = {
   ],
   theme: {
       screens: {
-        'mobile': '768px',
-        // => @media (min-width: 768px) { ... }
+        'mobile': {'max': '767px'},
   
-        'tablet': '992px',
-        // => @media (min-width: 1024px) { ... }
+        'tablet': {'min':'768px', 'max': '991px'},
   
-        'desktop': '1280px',
-        // => @media (min-width: 1280px) { ... }
+        'desktop': {'min':'992px'},
   
       },
       container: {
         width: {
-          mobile: '100%',
-          tablet: '992px',
-          desktop: '1280px'
+          tablet: '768px',
+          desktop: '992px'
         },
         center: true,
       },
