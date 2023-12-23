@@ -4,5 +4,16 @@
     box-shadow: 0px 0px 8.520000457763672px 0px #00000021;
     background: linear-gradient(180deg, #EDF1FF 0%, #F2F4FD 52.6%, #FFFFFF 100%);
 
-    ;
+    .bg-opacity::before {
+
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(180deg, #EDF1FF 0%, #F2F4FD 52.6%, #FFFFFF 100%);
+        opacity: 0.9;
+        z-index: -1;
+    }
 }
