@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import {selectScrollPosition} from '../features/slices/scrollSlice'
+import { selectScreenMode } from '../features/slices/screenSlice'
 import logo from '../assets/svg/Logo.svg'
 
 const Nav = (props:{mobileMenu:boolean})=>{
@@ -26,9 +27,8 @@ const Header = () => {
   const [scrollValueArray,setScrollValueArray] = useState<number[]>([])
 
 const selectedScrollYPosition = useSelector(selectScrollPosition)
-  // window.addEventListener('resize', () => {
-  //   console.log(window.innerWidth)
-  // })
+const selectedScreenMode = useSelector(selectScreenMode)
+ 
   
 
 
@@ -54,6 +54,11 @@ const selectedScrollYPosition = useSelector(selectScrollPosition)
 
    },[selectedScrollYPosition]) 
 
+   useEffect(()=>{
+    selectedScreenMode !== 'mobile' && setMobileHeaderShow (false)
+
+   },[selectedScreenMode])
+
 
 
   return (
@@ -62,14 +67,14 @@ const selectedScrollYPosition = useSelector(selectScrollPosition)
         <div className='container px-3  h-full flex items-center justify-between'>
         <img className='h-3/4' src={logo} alt="" />
       <div className='mobile:hidden'><Nav mobileMenu = {false}/></div>
-        <span onClick={()=>setMobileHeaderShow(true)} className='text-2xl font-bold tablet:hidden desktop:hidden cursor-pointer'>&#x2630;</span>
+        <span onClick={()=>setMobileHeaderShow(true)} className=' tablet:hidden desktop:hidden cursor-pointer text-4xl font-extrabold'>&#x2630;</span>
         </div>
         {
         mobileHeaderShow ?
         <div className='bg-opacity  fixed top-0 left-0 w-full h-full tablet:hidden desktop:hidden '>
 
           <div className=' flex items-center justify-end p-5'>
-            <span onClick={()=>setMobileHeaderShow(false)} className='cursor-pointer text-3xl'>&#x2718;</span>
+            <span onClick={()=>setMobileHeaderShow(false)} className='cursor-pointer text-3xl font-extrabold'>&#x2718;</span>
           </div>
           <Nav mobileMenu = {true}/>
 
