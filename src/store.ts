@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import scrollSliceReducer from "./features/slices/scrollSlice";
-import screenSlice from "./features/slices/screenSlice";
+import screenSliceReducer from "./features/slices/screenSlice";
+import sectionReducer from './features/slices/activeSectionSlice'
 
 export const store = configureStore({
     reducer:{
         scrollPosition:scrollSliceReducer,
-        screenMode: screenSlice
+        screenMode: screenSliceReducer,
+        activeSection: sectionReducer
     }
 })

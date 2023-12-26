@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface screenModeType {
-    screenMode: 'mobile' | 'tablet' | 'desktop'
+    screenMode: 'mobile' | 'tablet' | 'desktop',
+    screenHeight:number
 }
 
 const initialState = {
-    screenMode: 'mobile'
+    screenMode: 'mobile',
+    screenHeight:0
 }
 
 const screenSlice = createSlice({
@@ -21,14 +23,18 @@ const screenSlice = createSlice({
                case action.payload >=992 : {state.screenMode = 'desktop';}
                break;
             }
+        },
+        screenHeight: (state,actions) =>{
+            state.screenHeight = actions.payload
         }
     }
 })
 
 
-export const {screenMode} = screenSlice.actions;
+export const {screenMode,screenHeight} = screenSlice.actions;
 
 
 export const selectScreenMode = (state:{screenMode:screenModeType}) => state.screenMode.screenMode;
+export const selectScreenHeight = (state:{screenMode:screenModeType}) => state.screenMode.screenHeight;
 
 export default screenSlice.reducer

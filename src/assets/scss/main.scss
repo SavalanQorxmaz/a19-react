@@ -1,7 +1,11 @@
 
 @import './header.scss';
 @import './footer.scss';
+@import './sections.scss';
 
-.home {
-    height: 1500px;
+* {
+    scroll-behavior: smooth;
 }
+
+
+

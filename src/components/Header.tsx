@@ -1,19 +1,23 @@
 import { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
-import {selectScrollPosition} from '../features/slices/scrollSlice'
-import { selectScreenMode } from '../features/slices/screenSlice'
+import {selectScrollPosition, selectScrollHeight} from '../features/slices/scrollSlice'
+import { selectScreenMode,selectScreenHeight } from '../features/slices/screenSlice'
+import { activeSection, selectActiveSection } from '../features/slices/activeSectionSlice'
 import logo from '../assets/svg/Logo.svg'
+import { Link } from 'react-router-dom'
 
-const Nav = (props:{mobileMenu:boolean})=>{
-  const {mobileMenu} = props
+const Nav = (props:{mobileMenu:boolean, setMobileHeaderShow:React.Dispatch<React.SetStateAction<boolean>>})=>{
+  const {mobileMenu, setMobileHeaderShow} = props
+  
+const selectedActiveSection = useSelector(selectActiveSection)
 
   return (
     <>
       <ul className={mobileMenu?  'flex flex-col justify-center items-center text-3xl [&>*]:mt-8  [&>*]:cursor-pointer': 'flex [&>*]:ml-8  [&>*]:cursor-pointer' }>
-            <li>Haqqımızda</li>
-            <li>Xəbərlər</li>
-            <li>Məhsullar</li>
-            <li>Əlaqə</li>
+            <li><a onClick={()=>setMobileHeaderShow(false)} href="#about" className={selectedActiveSection === 'about'?  'text-green-500' : ''}>Haqqımızda</a></li>
+            <li><a onClick={()=>setMobileHeaderShow(false)} href="#news" className={selectedActiveSection === 'news'?  'text-green-500' : ''}>Xəbərlər</a></li>
+            <li><a onClick={()=>setMobileHeaderShow(false)} href="#products" className={selectedActiveSection === 'products'?  'text-green-500' : ''}>Məhsullar</a></li>
+            <li><a onClick={()=>setMobileHeaderShow(false)} href="#contact" className={selectedActiveSection === 'contact'?  'text-green-500' : ''}>Əlaqə</a></li>
             <li>AZE</li>
         </ul>
     </>
@@ -25,11 +29,16 @@ const Header = () => {
   const [mobileHeaderShow, setMobileHeaderShow] = useState(false)
   const [showHeader, setShowHeader] = useState(true)
   const [scrollValueArray,setScrollValueArray] = useState<number[]>([])
+  const [scrollPositionDegree,setScrollPositionDegree] = useState(0)
 
 const selectedScrollYPosition = useSelector(selectScrollPosition)
 const selectedScreenMode = useSelector(selectScreenMode)
- 
-  
+const selectedActiveSection = useSelector(selectActiveSection)
+const selectedScrollHeight = useSelector(selectScrollHeight)
+const selectedScreenHeight = useSelector(selectScreenHeight)
+
+
+
 
 
    // SCROLL HADISESINDE HEADERIN IRELI GERI HEREKETINI TEMIN ETMEK UCUN
@@ -59,6 +68,15 @@ const selectedScreenMode = useSelector(selectScreenMode)
 
    },[selectedScreenMode])
 
+   useEffect(()=>{
+
+    setScrollPositionDegree(Math.floor(selectedScrollYPosition/(selectedScrollHeight-selectedScreenHeight)*100))
+
+   })
+
+
+   
+
 
 
   return (
@@ -66,7 +84,7 @@ const selectedScreenMode = useSelector(selectScreenMode)
      <div className={showHeader? 'header-background flex items-center show-header' : 'header-background flex items-center hide-header'}>
         <div className='container px-3  h-full flex items-center justify-between'>
         <img className='h-3/4' src={logo} alt="" />
-      <div className='mobile:hidden'><Nav mobileMenu = {false}/></div>
+      <div className='mobile:hidden'><Nav mobileMenu = {false} setMobileHeaderShow = {setMobileHeaderShow}/></div>
         <span onClick={()=>setMobileHeaderShow(true)} className=' tablet:hidden desktop:hidden cursor-pointer text-4xl font-extrabold'>&#x2630;</span>
         </div>
         {
@@ -76,12 +94,15 @@ const selectedScreenMode = useSelector(selectScreenMode)
           <div className=' flex items-center justify-end p-5'>
             <span onClick={()=>setMobileHeaderShow(false)} className='cursor-pointer text-3xl font-extrabold'>&#x2718;</span>
           </div>
-          <Nav mobileMenu = {true}/>
+          <Nav mobileMenu = {true} setMobileHeaderShow = {setMobileHeaderShow}/>
 
         </div>
         :
         null
        }
+       <div className='absolute -bottom-1 w-full bg-slate-900 h-1'>
+        <div style={{left: `${scrollPositionDegree}%`}} className='absolute top-0 left-0 bottom-0 right-0 bg-slate-200'></div>
+       </div>
     </div>
    </header>
 
